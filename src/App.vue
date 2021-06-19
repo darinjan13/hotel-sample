@@ -1,22 +1,25 @@
 <template>
   <v-app>
     <v-main>
-      <Home/>
-      <Services/>
+      <Home />
+      <Services />
+      <Footer/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Home from './components/Home';
-import Services from './components/Services'
+import Home from "./components/Home";
+import Services from "./components/Services";
+import Footer from "./components/Footer";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     Home,
     Services,
+    Footer,
   },
 
   data: () => ({
@@ -26,5 +29,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>
