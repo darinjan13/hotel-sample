@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Book Now button -->
     <v-card class="mx-auto mb-16">
       <v-img
         class="align-center"
@@ -11,6 +12,8 @@
             color="rgba(0, 209, 255, 0.78)"
             class="button pa-sm-6 pa-md-8 mx-auto white--text text-button"
             x-large
+            elevation="24"
+            @click="gwapo()"
             >Book Now</v-btn
           >
         </v-card-actions>
@@ -49,9 +52,20 @@
   </div>
 </template>
 <script>
+
+import { EventBus } from '../main'
+
 export default {
   data() {
-    return {};
+    return {
+      dialog: false,
+    };
+  },
+  methods: {
+    gwapo() {
+      this.dialog = true;
+      EventBus.$emit('show', this.dialog);
+    }
   },
 };
 </script>
