@@ -33,29 +33,69 @@
             <v-row justify="center">
               <!-- Arrival Date -->
               <v-col cols="12" sm="4" md="4" lg="5" xl="6">
-                <v-menu
-                  ref="menu"
-                  v-model="menu"
-                  :close-on-content-click="asd()"
+                <v-dialog
+                  ref="dialog2"
+                  v-model="modal1"
                   :value.sync="arrivalDate"
-                  elevation="0"
-                  transition="scale-transition"
+                  persistent
+                  width="290px"
                 >
-                <template v-slot:activator="{ on }">
-                  <v-text-field
-                    :value="arrivalDate"
-                    label="Pick a Date"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-date-picker v-model="dates" multiple no-title>
-                  <v-spacer></v-spacer>
-                  <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                  <v-btn text color="primary" @click="$refs.menu.save(dates)">Okay</v-btn>
-                </v-date-picker>
-                </v-menu>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="arrivalDate"
+                      label="Arrival Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="arrivalDate"
+                    scrollable
+                    :min="dateToday"
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="arrivalDateCanel()"
+                      >Cancel</v-btn
+                    >
+                    <v-btn text color="primary" @click="arrivalDateOkay()"
+                      >Okay</v-btn
+                    >
+                  </v-date-picker>
+                </v-dialog>
+              </v-col>
+
+              <!-- End Date -->
+              <v-col cols="12" sm="4" md="4" lg="5" xl="6">
+                <v-dialog
+                  ref="dialog3"
+                  v-model="modal2"
+                  :value.sync="endDate"
+                  persistent
+                  width="290px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="endDate"
+                      label="End Date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      :disabled="disable"
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="endDate"
+                    scrollable
+                    :min="arrivalDate"
+                  >
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="endDateCanel">Cancel</v-btn>
+                    <v-btn text color="primary" @click="endDateOkay">Okay</v-btn>
+                  </v-date-picker>
+                </v-dialog>
               </v-col>
             </v-row>
 
@@ -78,6 +118,9 @@ export default {
     return {
       dialog: false,
       valid: true,
+      modal1: false,
+      modal2: false,
+      disable: true,
       fname: "",
       fnameRules: [
         (v) => !!v || "First name is Required",
@@ -88,8 +131,8 @@ export default {
         (v) => !!v || "Last name is Required",
         (v) => (v && v.length >= 2) || "Last name must be more than 1",
       ],
-      menu: false,
-      dates: [],
+      arrivalDate: null,
+      endDate: null,
       dateToday: new Date().toISOString().substr(0, 10),
     };
   },
@@ -100,18 +143,27 @@ export default {
         this.dialog = false;
       }
     },
-    asd() {
-      if (this.dates.length < 2) {
-        return false;
-      }
-    }
-  },
 
-  computed: {
-    arrivalDate() {
-      this.dates.toString();
-      return this.dates.join(' ~ ')
-    }
+    // Arrival Date Functions
+    arrivalDateCanel() {
+      this.modal1 = false;
+      this.disable = true;
+      this.endDate = null;
+      this.arrivalDate = null;
+    },
+    arrivalDateOkay() {
+      this.$refs.dialog2.save(this.arrivalDate);
+      this.disable = false;
+    },
+
+    // End Date Functions
+    endDateCanel() {
+      this.modal2 = false;
+      this.endDate = null;
+    },
+    endDateOkay() {
+      this.$refs.dialog3.save(this.endDate);
+    },
   },
 
   created() {
