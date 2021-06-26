@@ -34,5 +34,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap');
+#app {
+  font-family: 'Playfair Display', serif;
+  letter-spacing: 3px;
+}
 </style> 

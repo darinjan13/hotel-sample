@@ -4,7 +4,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" sm="8" md="8">
           <v-card elevation="24" color="rgba(0, 209, 255, 0.78)" class="text-center pa-8 pa-md-16">
-            <div class="text-overline">Get News from us!</div>
+            <div class="">Get News from us!</div>
             <v-card-title>
               <v-text-field label="Email" prepend-icon="mdi-email">
               </v-text-field>

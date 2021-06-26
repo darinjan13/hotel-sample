@@ -1,26 +1,26 @@
 <template>
   <div>
     <!-- Book Now button -->
-    <v-card class="mx-auto mb-16">
+    <v-card>
       <v-img
-        class="align-center"
-        height="650"
+        class="align-end mb-10"
+        height="640"
         :src="require('../assets/3.jpg')"
       >
-        <v-card-actions>
+      <v-row>
+        <v-col class="mb-12 mb-md-0" align="center">
           <v-btn
             color="rgba(0, 209, 255, 0.78)"
-            class="button pa-sm-6 pa-md-8 mx-auto white--text text-button"
+            class="pa-sm-6 pa-md-8 mb-16 white--text"
             x-large
             elevation="24"
             @click="gwapo()"
-            >Book Now</v-btn
-          >
-        </v-card-actions>
+            >Book Now</v-btn>
+        </v-col>
+      </v-row>
       </v-img>
     </v-card>
 
-    <v-spacer></v-spacer>
     <v-container>
       <v-row justify="center">
         <v-col cols="xs-8 sm-8 md-10 lg-7 xl-12">
@@ -52,8 +52,7 @@
   </div>
 </template>
 <script>
-
-import { EventBus } from '../main'
+import { EventBus } from "../main";
 
 export default {
   data() {
@@ -64,15 +63,16 @@ export default {
   methods: {
     gwapo() {
       this.dialog = true;
-      EventBus.$emit('show', this.dialog);
-    }
+      EventBus.$emit("show", this.dialog);
+    },
   },
 };
 </script>
 <style scoped>
 p {
-  letter-spacing: 1px;
-  word-spacing: 1px;
+  letter-spacing: 2px;
+  word-spacing: 3px;
+  font-size: 19px;
 }
 .no-margin {
   margin-bottom: 0;

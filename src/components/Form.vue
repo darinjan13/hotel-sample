@@ -31,7 +31,7 @@
 
             <!-- Dates -->
             <v-row class="mx-10 mx-sm-10 mx-md-16" justify="center">
-              <!-- Arrival Date -->
+              <!-- Check in -->
               <v-col cols="12" sm="4" md="4" lg="5" xl="6">
                 <v-dialog
                   ref="dialog2"
@@ -43,9 +43,12 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="arrivalDate"
-                      label="Arrival Date"
+                      label="Check in"
                       prepend-icon="mdi-calendar"
                       readonly
+                      required
+                      dense
+                      :rules="arrivalDateRule"
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
@@ -66,7 +69,7 @@
                 </v-dialog>
               </v-col>
 
-              <!-- End Date -->
+              <!-- Check out -->
               <v-col cols="12" sm="4" md="4" lg="5" xl="6">
                 <v-dialog
                   ref="dialog3"
@@ -78,14 +81,18 @@
                   <template v-slot:activator="{ on, attrs }">
                     <v-text-field
                       v-model="endDate"
-                      label="End Date"
+                      label="Check out"
                       prepend-icon="mdi-calendar"
                       readonly
+                      required
+                      dense
+                      :rules="endDateRule"
                       :disabled="disable"
                       v-bind="attrs"
                       v-on="on"
                     ></v-text-field>
                   </template>
+                  <!-- Check out Date Picker -->
                   <v-date-picker
                     v-model="endDate"
                     scrollable
@@ -102,7 +109,10 @@
                 </v-dialog>
               </v-col>
             </v-row>
+
+            <!-- Third Row -->
             <v-row class="mx-10 mx-sm-10 mx-md-16" justify="center">
+              <!-- Child -->
               <v-col cols="12" sm="4" md="4" lg="5" xl="6" class="text-center">
                 <v-select
                   class="mb-n3"
@@ -113,22 +123,43 @@
                   dense
                 ></v-select>
               </v-col>
+              <!-- Adult -->
               <v-col cols="12" sm="4" md="4" lg="5" xl="6">
                 <v-select
                   class="mb-n3"
                   v-model="adult"
-									:items="numberOfAdult"
+                  :items="numberOfAdult"
                   label="Adult"
                   outlined
                   dense
                 ></v-select>
               </v-col>
             </v-row>
-            <v-row>
-              <v-col class="text-center" cols="12">
-                <v-btn :disabled="!valid" @click="validate(); asd()">Submit</v-btn>
+            <v-row class="mx-10 mx-sm-10 mx-md-16" justify="center">
+              <v-col cols="12" sm="4" md="4" lg="5" xl="6">
+                <v-select
+                  class="mb-n3"
+                  v-model="room"
+                  :items="selectRoom"
+                  :rules="roomRules"
+                  label="Select Room"
+                  required
+                  outlined
+                  dense
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="4" md="4" lg="5" xl="6">
+                <v-text-field
+                  class="mb-n3"
+                  label="Promo Code"
+                  outlined
+                  dense
+                ></v-text-field>
               </v-col>
             </v-row>
+            <v-col class="text-center" cols="12">
+              <v-btn :disabled="!valid" @click="validate()">Submit</v-btn>
+            </v-col>
           </v-form>
         </v-card>
       </v-dialog>
@@ -156,13 +187,18 @@ export default {
         (v) => !!v || "Last name is Required",
         (v) => (v && v.length >= 2) || "Last name must be more than 1",
       ],
-      arrivalDate: null,
+      arrivalDate: "",
+      arrivalDateRule: [(v) => !!v || "Check in is Required."],
       endDate: null,
+      endDateRule: [(v) => !!v || "Check out is Required."],
       dateToday: new Date().toISOString().substr(0, 10),
       child: 0,
       numberOfChild: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       adult: 0,
       numberOfAdult: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      room: "",
+      selectRoom: ["Standard", "Deluxe"],
+      roomRules: [ (v) => !!v || "Room is required." ],
     };
   },
 
@@ -171,12 +207,9 @@ export default {
       if (this.$refs.form.validate() == true) {
         this.dialog = false;
       }
-		},
-		asd() {
-			console.log(this.child);
-		},
+    },
 
-    // Arrival Date Functions
+    // Check in Functions
     arrivalDateCanel() {
       this.modal1 = false;
       this.disable = true;
@@ -188,7 +221,7 @@ export default {
       this.disable = false;
     },
 
-    // End Date Functions
+    // Check out Functions
     endDateCanel() {
       this.modal2 = false;
       this.endDate = null;
