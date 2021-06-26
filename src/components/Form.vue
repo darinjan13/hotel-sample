@@ -2,9 +2,9 @@
   <div>
     <v-row>
       <v-dialog v-model="dialog">
-        <v-card class="pa-6 pa-sm-10 pa-md-15">
+        <v-card class="py-6 pa-sm-10 pa-md-16">
           <v-form ref="form" v-model="valid" lazy-validation>
-            <v-row justify="center">
+            <v-row class="mx-10 mx-sm-10 mx-md-16" justify="center">
               <v-col cols="12" sm="4" md="4" lg="5" xl="6" class="text-center">
                 <v-text-field
                   class="mb-n3"
@@ -30,7 +30,7 @@
             </v-row>
 
             <!-- Dates -->
-            <v-row justify="center">
+            <v-row class="mx-10 mx-sm-10 mx-md-16" justify="center">
               <!-- Arrival Date -->
               <v-col cols="12" sm="4" md="4" lg="5" xl="6">
                 <v-dialog
@@ -92,16 +92,41 @@
                     :min="arrivalDate"
                   >
                     <v-spacer></v-spacer>
-                    <v-btn text color="primary" @click="endDateCanel">Cancel</v-btn>
-                    <v-btn text color="primary" @click="endDateOkay">Okay</v-btn>
+                    <v-btn text color="primary" @click="endDateCanel"
+                      >Cancel</v-btn
+                    >
+                    <v-btn text color="primary" @click="endDateOkay"
+                      >Okay</v-btn
+                    >
                   </v-date-picker>
                 </v-dialog>
               </v-col>
             </v-row>
-
+            <v-row class="mx-10 mx-sm-10 mx-md-16" justify="center">
+              <v-col cols="12" sm="4" md="4" lg="5" xl="6" class="text-center">
+                <v-select
+                  class="mb-n3"
+                  v-model="child"
+                  :items="numberOfChild"
+                  label="Child"
+                  outlined
+                  dense
+                ></v-select>
+              </v-col>
+              <v-col cols="12" sm="4" md="4" lg="5" xl="6">
+                <v-select
+                  class="mb-n3"
+                  v-model="adult"
+									:items="numberOfAdult"
+                  label="Adult"
+                  outlined
+                  dense
+                ></v-select>
+              </v-col>
+            </v-row>
             <v-row>
               <v-col class="text-center" cols="12">
-                <v-btn :disabled="!valid" @click="validate()">Submit</v-btn>
+                <v-btn :disabled="!valid" @click="validate(); asd()">Submit</v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -134,6 +159,10 @@ export default {
       arrivalDate: null,
       endDate: null,
       dateToday: new Date().toISOString().substr(0, 10),
+      child: 0,
+      numberOfChild: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      adult: 0,
+      numberOfAdult: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     };
   },
 
@@ -142,7 +171,10 @@ export default {
       if (this.$refs.form.validate() == true) {
         this.dialog = false;
       }
-    },
+		},
+		asd() {
+			console.log(this.child);
+		},
 
     // Arrival Date Functions
     arrivalDateCanel() {
