@@ -1,12 +1,16 @@
 <template>
   <div>
+
     <!-- Book Now button -->
-    <v-card>
+    <v-card tile flat class="mt-n16" >
+      
       <v-img
         class="align-end mb-10"
-        height="640"
+        height="650"
         :src="require('../assets/3.jpg')"
       >
+      
+      
       <v-row>
         <v-col class="mb-12 mb-md-0" align="center">
           <v-btn

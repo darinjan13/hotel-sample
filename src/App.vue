@@ -1,5 +1,13 @@
 <template>
   <v-app>
+    <v-app-bar
+      app
+      flat
+      color="transparent"
+    >
+      <v-toolbar-title> Luxury Hotel </v-toolbar-title>
+      <v-spacer></v-spacer>
+    </v-app-bar>
     <v-main>
       <Home />
       <Form />
@@ -14,8 +22,8 @@
 import Home from "./components/Home";
 import Services from "./components/Services";
 import Footer from "./components/Footer";
-import Emailus from './components/Emailus';
-import Form from './components/Form'
+import Emailus from "./components/Emailus";
+import Form from "./components/Form";
 
 export default {
   name: "App",
@@ -35,9 +43,9 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap");
 #app {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   letter-spacing: 3px;
 }
 </style> 
