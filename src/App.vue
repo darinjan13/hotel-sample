@@ -1,13 +1,5 @@
 <template>
   <v-app>
-    <v-app-bar
-      app
-      flat
-      color="transparent"
-    >
-      <v-toolbar-title> Luxury Hotel </v-toolbar-title>
-      <v-spacer></v-spacer>
-    </v-app-bar>
     <v-main>
       <Home />
       <Form />
