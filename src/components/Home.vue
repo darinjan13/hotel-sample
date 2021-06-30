@@ -1,27 +1,26 @@
 <template>
   <div>
-
     <!-- Book Now button -->
-    <v-card tile flat class="mt-n16" >
-      
+    <v-card tile flat>
       <v-img
-        class="align-end mb-10"
+        class="align-start mb-10"
         height="650"
-        :src="require('../assets/3.jpg')"
+        :src="require('../assets/1.jpg')"
       >
-      
-      
-      <v-row>
-        <v-col class="mb-12 mb-md-0" align="center">
-          <v-btn
-            color="rgba(0, 209, 255, 0.78)"
-            class="pa-sm-6 pa-md-8 mb-16 white--text"
-            x-large
-            elevation="24"
-            @click="gwapo()"
-            >Book Now</v-btn>
-        </v-col>
-      </v-row>
+        <v-alert color="#041e29" dense>
+          <v-row class="align-center">
+            <v-col cols=12 sm=9 md=9 lg=9 xl=9 class="pa-0 mt-n4 mt-sm-0">
+              <v-card-title class="card-title justify-start justify-md-end py-6 mb-n10 mb-sm-0 mb-md-0 mb-lg-0 mb-xl-0 text-center white--text">
+                50% off on your first booking. Use the code "COOL"!
+              </v-card-title>
+            </v-col>
+            <v-col cols=12 sm=3 md=3 lg=3 xl=3 class="px-0 pb-0">
+              <v-card-actions class="justify-center justify-sm-start mb-3" >
+                <v-btn x-large outlined color="white" block @click="bookNowForm">BOOK NOW!</v-btn>
+              </v-card-actions>
+            </v-col>
+          </v-row>
+        </v-alert>
       </v-img>
     </v-card>
 
@@ -61,18 +60,21 @@ import { EventBus } from "../main";
 export default {
   data() {
     return {
-      dialog: false,
+      bookNowFormDialog: false,
     };
   },
   methods: {
-    gwapo() {
-      this.dialog = true;
-      EventBus.$emit("show", this.dialog);
+    bookNowForm() {
+      this.bookNowFormDialog = true;
+      EventBus.$emit("showBookNowForm", this.bookNowFormDialog);
     },
   },
 };
 </script>
 <style scoped>
+.card-title {
+  word-break: unset;
+}
 p {
   letter-spacing: 2px;
   word-spacing: 3px;

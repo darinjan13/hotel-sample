@@ -5,6 +5,7 @@
       <Form />
       <Services />
       <Emailus />
+      <DataTables />
       <Footer />
     </v-main>
   </v-app>
@@ -16,6 +17,7 @@ import Services from "./components/Services";
 import Footer from "./components/Footer";
 import Emailus from "./components/Emailus";
 import Form from "./components/Form";
+import DataTables from "./components/DataTable/DataTables";
 
 export default {
   name: "App",
@@ -26,6 +28,7 @@ export default {
     Footer,
     Emailus,
     Form,
+    DataTables,
   },
 
   data: () => ({

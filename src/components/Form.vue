@@ -232,7 +232,7 @@ export default {
   },
 
   created() {
-    EventBus.$on("show", (data) => {
+    EventBus.$on("showBookNowForm", (data) => {
       this.dialog = data;
     });
   },
