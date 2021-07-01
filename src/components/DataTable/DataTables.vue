@@ -2,6 +2,8 @@
   <v-dialog v-model="dialog">
     <v-card>
       <v-card-title class="justify-center"> Data Tables </v-card-title>
+
+      <!-- Search -->
       <v-card-title>
         <v-row justify="center">
           <v-col cols="12" sm="8" md="8" lg="8" xl="8">
@@ -26,6 +28,7 @@
       >
         <!-- Action Column -->
         <template v-slot:[`item.actions`]="{ item }">
+          <!-- Edit Icon -->
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -38,8 +41,10 @@
                 <v-icon>mdi-pencil-outline</v-icon>
               </v-btn>
             </template>
-            <span>Edit</span>
+            <span>Update</span>
           </v-tooltip>
+
+          <!-- Delete Icon -->
           <v-tooltip top>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -75,9 +80,9 @@
 
           <!-- Add Dialog or Edit Dialog card-->
           <v-card>
-            <v-card-title>Add New Item</v-card-title>
+            <v-card-title class="justify-center">Add New Item</v-card-title>
             <v-card-text>
-              <v-row>
+              <v-row justify="center">
                 <v-form ref="form" v-model="validRules">
                   <!-- Add Name  or Edit Name-->
                   <v-col cols="12">
@@ -113,7 +118,7 @@
             </v-card-text>
 
             <!-- Add Dialog or Edit Dialog Actions -->
-            <v-card-actions class="justify-end">
+            <v-card-actions class="justify-center">
               <v-btn outlined color="error" @click="saveDialogClose()"
                 >Cancel</v-btn
               >
@@ -125,8 +130,9 @@
                   saveData();
                   validate;
                 "
-                >Save</v-btn
               >
+                Save
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -137,14 +143,24 @@
             <v-card-title>
               Are you sure you want to delete {{ forEditData.name }}'s Data?
             </v-card-title>
-            <v-card-actions>
-              <v-btn text @click="closeDeleteDialog()">No</v-btn>
-              <v-btn text @click="confirmDelete()">Yes</v-btn>
+            <v-card-actions class="justify-center">
+              <v-btn text color="primary" @click="closeDeleteDialog()">No</v-btn>
+              <v-btn
+                text
+                color="error"
+                @click="
+                  confirmDelete();
+                "
+                >Yes
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-card-actions>
-
+        <v-snackbar v-model="snackbarAdd" color="success" :timeout="timeout">Succesfully added a data.</v-snackbar>
+        <v-snackbar v-model="snackbarEdit" color="success" :timeout="timeout">Updated successfully.</v-snackbar>
+        <v-snackbar v-model="snackbarDel" color="error" :timeout="timeout">{{name}} 's data is deleted.</v-snackbar>
+      
       <!-- Pagination -->
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </v-card>
@@ -157,14 +173,19 @@ export default {
   data() {
     return {
       dialog: false,
+      snackbarAdd: false,
+      snackbarDel: false,
+      snackbarEdit: false,
       validRules: true,
-      search: "",
       editDialog: false,
       deleteDialog: false,
       page: 1,
       pageCount: 0,
       itemsPerPage: 3,
       editIndex: -1,
+      timeout: 2000,
+      search: "",
+      name: "",
       headers: [
         {
           text: "Name",
@@ -173,7 +194,7 @@ export default {
         },
         { text: "Email", value: "email" },
         { text: "Address", value: "address" },
-        { text: "Actions", value: "actions" },
+        { text: "Actions", value: "actions", sortable: false },
       ],
       data: [
         {
@@ -240,7 +261,9 @@ export default {
     saveData() {
       if (this.editIndex > -1) {
         Object.assign(this.data[this.editIndex], this.forEditData);
+        this.snackbarEdit = true;
       } else {
+        this.snackbarAdd = true;
         this.data.push(this.forEditData);
       }
       this.saveDialogClose();
@@ -267,6 +290,8 @@ export default {
     },
     confirmDelete() {
       this.data.splice(this.editIndex, 1);
+      this.snackbarDel = true;
+      this.name = this.forEditData.name;
       this.closeDeleteDialog();
     },
 
