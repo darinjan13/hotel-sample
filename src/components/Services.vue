@@ -5,14 +5,14 @@
         <div class="text-center" style="font-size: 50px;">ROOMS</div>
         <v-row class="pa-3 text-center" align="center">
           <v-col class="my-6" cols="12" md="6">
-            <v-card color="#66f1e1" elevation="24" min-height="300">
+            <v-card elevation="24" min-height="300">
               <v-row align="center" class="row-max-height">
                 <v-col md="5">
                   <v-card-title
                     class="my-3 justify-center justify-sm-start justify-md-start justify-lg-center justify-xl-center"
                     >STANDARD</v-card-title
                   >
-                  <v-card-subtitle class="mb-n10 mb-md-1 black--text text-start"
+                  <v-card-subtitle class="mb-n10 mb-md-1 black--text text-start card-subtitle"
                     >Lorem ipsum dolor sit amet consectetur adipisicing elit. At
                     debitis, quia minima dignissimos architecto et magni
                     repellendus illum eaque mollitia, expedita nulla vero iusto,
@@ -31,14 +31,14 @@
             </v-card>
           </v-col>
           <v-col class="my-6" cols="12" md="6">
-            <v-card color="#66f1e1" elevation="24" min-height="300">
+            <v-card elevation="24" min-height="300">
               <v-row align="center">
                 <v-col md="5">
                   <v-card-title
                     class="my-3 justify-center justify-sm-start justify-md-start justify-lg-center justify-xl-center"
                     >DELUXE</v-card-title
                   >
-                  <v-card-subtitle class="mb-n10 mb-md-1 black--text text-start"
+                  <v-card-subtitle class="mb-n10 mb-md-1 black--text text-start card-subtitle"
                     >Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                     Perferendis, molestias cupiditate? Delectus, animi sint.
                     Quisquam accusamus adipisci itaque obcaecati blanditiis at
@@ -69,4 +69,8 @@ export default {
 };
 </script>
 <style scoped>
+.card-subtitle {
+  text-align:justify;
+  text-justify: inter-word;
+}
 </style>
