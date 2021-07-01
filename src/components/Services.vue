@@ -10,9 +10,9 @@
                 <v-col md="5">
                   <v-card-title
                     class="my-3 justify-center justify-sm-start justify-md-start justify-lg-center justify-xl-center"
-                    >Standard</v-card-title
+                    >STANDARD</v-card-title
                   >
-                  <v-card-subtitle class="mb-n10 mb-md-1 black--text"
+                  <v-card-subtitle class="mb-n10 mb-md-1 black--text text-start"
                     >Lorem ipsum dolor sit amet consectetur adipisicing elit. At
                     debitis, quia minima dignissimos architecto et magni
                     repellendus illum eaque mollitia, expedita nulla vero iusto,
@@ -36,9 +36,9 @@
                 <v-col md="5">
                   <v-card-title
                     class="my-3 justify-center justify-sm-start justify-md-start justify-lg-center justify-xl-center"
-                    >Deluxe</v-card-title
+                    >DELUXE</v-card-title
                   >
-                  <v-card-subtitle class="mb-n10 mb-md-1 black--text"
+                  <v-card-subtitle class="mb-n10 mb-md-1 black--text text-start"
                     >Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                     Perferendis, molestias cupiditate? Delectus, animi sint.
                     Quisquam accusamus adipisci itaque obcaecati blanditiis at
