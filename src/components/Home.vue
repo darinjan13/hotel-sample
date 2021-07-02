@@ -55,7 +55,7 @@
   </div>
 </template>
 <script>
-import { EventBus } from "../main";
+import { EventBus } from "../a";
 
 export default {
   data() {

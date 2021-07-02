@@ -9,8 +9,12 @@
   },
   "dependencies": {
     "animate.css": "^4.1.1",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "firebase": "^8.7.0",
     "vue": "^2.6.11",
+    "vue-axios": "^3.2.4",
+    "vuefire": "^2.2.5",
     "vuetify": "^2.4.0"
   },
   "devDependencies": {

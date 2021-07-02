@@ -167,8 +167,8 @@
   </div>
 </template>
 <script>
-import { EventBus } from "../main";
-
+import { EventBus } from "../a";
+import {db} from '../firebase/database'
 export default {
   data() {
     return {
@@ -198,13 +198,25 @@ export default {
       numberOfAdult: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
       room: "",
       selectRoom: ["Standard", "Deluxe"],
-      roomRules: [ (v) => !!v || "Room is required." ],
+      roomRules: [(v) => !!v || "Room is required."],
+      data: [],
     };
   },
 
   methods: {
-    validate() {
+    async validate() {
       if (this.$refs.form.validate() == true) {
+        const data = {
+          firstname: this.fname,
+          lastname: this.lname,
+          checkin: this.arrivalDate,
+          checkout: this.endDate,
+          child: this.child,
+          adult: this.adult,
+          room: this.room,
+        };
+        console.log(data);
+        await db.collection('booking').doc(data.firstname).set(data);
         this.dialog = false;
       }
     },

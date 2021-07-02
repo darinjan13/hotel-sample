@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog">
+
     <v-card>
       <v-card-title class="justify-center"> Data Tables </v-card-title>
 
@@ -63,20 +63,6 @@
       <v-card-actions class="justify-center">
         <!-- Add Dialog or Edit Dialog -->
         <v-dialog v-model="editDialog" max-width="500">
-          <!-- Dialog Activator -->
-          <template v-slot:activator="{ on, attrs }">
-            <v-col cols="5">
-              <v-btn
-                v-bind="attrs"
-                v-on="on"
-                block
-                elevation="2"
-                color="#66f1e1"
-                class="black--text"
-                >Add
-              </v-btn>
-            </v-col>
-          </template>
 
           <!-- Add Dialog or Edit Dialog card-->
           <v-card>
@@ -87,8 +73,8 @@
                   <!-- Add Name  or Edit Name-->
                   <v-col cols="12">
                     <v-text-field
-                      v-model="forEditData.name"
-                      label="Name"
+                      v-model="forEditData.firstname"
+                      label="First Name"
                       :rules="requiredRules"
                       required
                     ></v-text-field>
@@ -97,9 +83,9 @@
                   <!-- Add Email or Edit Email-->
                   <v-col cols="12">
                     <v-text-field
-                      v-model="forEditData.email"
-                      label="Email"
-                      :rules="emailRules"
+                      v-model="forEditData.lastname"
+                      label="Lastname"
+                      :rules="requiredRules"
                       required
                     ></v-text-field>
                   </v-col>
@@ -107,11 +93,43 @@
                   <!-- Add Address or Edit Address -->
                   <v-col cols="12">
                     <v-text-field
-                      v-model="forEditData.address"
-                      label="Address"
+                      v-model="forEditData.checkin"
+                      label="Check in"
                       :rules="requiredRules"
                       required
                     ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="forEditData.checkout"
+                      label="Check out"
+                      :rules="requiredRules"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      v-model="forEditData.child"
+                      label="Child"
+                      :rules="requiredRules"
+                      required
+                    ></v-text-field>
+                    <v-col cols="12">
+                    <v-text-field
+                      v-model="forEditData.adult"
+                      label="Adult"
+                      :rules="requiredRules"
+                      required
+                    ></v-text-field>
+                    <v-col cols="12">
+                    <v-text-field
+                      v-model="forEditData.room"
+                      label="Room"
+                      :rules="requiredRules"
+                      required
+                    ></v-text-field>
+                  </v-col>
+                  </v-col>
                   </v-col>
                 </v-form>
               </v-row>
@@ -124,7 +142,6 @@
               >
               <v-btn
                 outlined
-                :disabled="!validRules"
                 color="success"
                 @click="
                   saveData();
@@ -164,15 +181,15 @@
       <!-- Pagination -->
       <v-pagination v-model="page" :length="pageCount"></v-pagination>
     </v-card>
-  </v-dialog>
+
 </template>
 <script>
-import { EventBus } from "../../main";
+import { EventBus } from "../../a";
+import { db } from '../../firebase/database'
 
 export default {
   data() {
     return {
-      dialog: false,
       snackbarAdd: false,
       snackbarDel: false,
       snackbarEdit: false,
@@ -188,68 +205,40 @@ export default {
       name: "",
       headers: [
         {
-          text: "Name",
+          text: "First Name",
           align: "start",
-          value: "name",
+          value: "firstname",
         },
-        { text: "Email", value: "email" },
-        { text: "Address", value: "address" },
+        { text: "Last Name", value: "lastname" },
+        { text: "Check in Date", value: "checkin" },
+        { text: "Check out Date", value: "checkout" },
+        { text: "Child", value: "child" },
+        { text: "Adult", value: "adult" },
+        { text: "Room", value: "room" },
         { text: "Actions", value: "actions", sortable: false },
       ],
-      data: [
-        {
-          name: "Fanny",
-          email: "fanny@gmail.com",
-          address: "Cebu City",
-        },
-        {
-          name: "Miya",
-          email: "miya@gmail.com",
-          address: "Cebu City",
-        },
-        {
-          name: "Mikasa",
-          email: "mikasa@gmail.com",
-          address: "Cebu City",
-        },
-        {
-          name: "Eren",
-          email: "eren@gmail.com",
-          address: "Cebu City",
-        },
-        {
-          name: "Annie",
-          email: "annie@gmail.com",
-          address: "Cebu City",
-        },
-        {
-          name: "Catviper",
-          email: "catviper@gmail.com",
-          address: "Cebu City",
-        },
-        {
-          name: "Boruto",
-          email: "boruto@gmail.com",
-          address: "Cebu City",
-        },
-      ],
+      data: [],
       requiredRules: [(v) => !!v || "Required."],
-      emailRules: [
-        (v) => !!v || "E-mail is required",
-        (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-      ],
       forEditData: [
         {
-          name: "",
-          email: "",
-          address: "",
+          firstname: "",
+          lastname: "",
+          checkin: "",
+          checkout: "",
+          child: "",
+          adult: "",
+          room: ""
         },
       ],
       defaultData: [
         {
-          name: "",
-          email: "",
-          address: "",
+          firstname: "",
+          lastname: "",
+          checkin: "",
+          checkout: "",
+          child: "",
+          adult: "",
+          room: ""
         },
       ],
     };
@@ -258,13 +247,12 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
-    saveData() {
+    async saveData() {
       if (this.editIndex > -1) {
         Object.assign(this.data[this.editIndex], this.forEditData);
+        const booking = db.collection('booking').doc(this.forEditData.firstname);
+        await booking.update(this.forEditData);
         this.snackbarEdit = true;
-      } else {
-        this.snackbarAdd = true;
-        this.data.push(this.forEditData);
       }
       this.saveDialogClose();
     },
@@ -288,10 +276,11 @@ export default {
       this.forEditData = { ...item };
       this.deleteDialog = true;
     },
-    confirmDelete() {
-      this.data.splice(this.editIndex, 1);
+    async confirmDelete() {
+      await db.collection('booking').doc(this.forEditData.firstname).delete();
+      // this.data.splice(this.editIndex, 1);
       this.snackbarDel = true;
-      this.name = this.forEditData.name;
+      this.name = this.forEditData.lastname;
       this.closeDeleteDialog();
     },
 
@@ -302,12 +291,20 @@ export default {
         this.editIndex = -1;
       });
     },
+    async fetchDataFromDb() {
+      const booking = db.collection('booking');
+      const snapshot = await booking.get();
+      // var data = [];
+      snapshot.forEach(doc => {
+        this.data.push(doc.data())
+      })
+    }
   },
-
   created() {
     EventBus.$on("showDataTablesDialog", (data) => {
       this.dialog = data;
     });
+    this.fetchDataFromDb();
   },
 };
 </script>

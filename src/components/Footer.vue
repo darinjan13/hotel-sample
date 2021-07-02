@@ -11,8 +11,8 @@
               >
             </v-col>
             <v-col cols="12" sm="4" md="4">
-              <a @click="openDataTablesDialog()" class=" text-decoration-none white--text"
-                >Data Tables</a
+              <a href="/crud" class=" text-decoration-none white--text"
+                >Costumer Data</a
               ><br />
               <a href="#" class=" text-decoration-none white--text"
                 >Feedback</a
@@ -48,24 +48,6 @@
     
   </div>
 </template>
-<script>
-
-import { EventBus } from "../main";
-
-export default {
-  data() {
-    return {
-      dataTablesDialog: false,
-    }
-  },
-  methods: {
-    openDataTablesDialog() {
-      this.dataTablesDialog = true;
-      EventBus.$emit("showDataTablesDialog", this.dataTablesDialog);
-    }
-  },
-}
-</script>
 <style scoped>
 p {
   font-size: 20px;
