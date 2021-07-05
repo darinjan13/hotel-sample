@@ -216,7 +216,7 @@ export default {
           room: this.room,
         };
         console.log(data);
-        await db.collection('booking').doc(data.firstname).set(data);
+        await db.collection('booking').add(data);
         this.dialog = false;
       }
     },
