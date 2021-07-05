@@ -36,7 +36,7 @@
               @click="editData(item)"
               v-bind="attrs"
               v-on="on"
-            ><v-icon>mdi-pencil-outline</v-icon>
+              ><v-icon>mdi-pencil-outline</v-icon>
             </v-btn>
           </template>
           <span>Update</span>
@@ -108,15 +108,11 @@
                   <v-text-field
                     v-model="forEditData.child"
                     label="Child"
-                    :rules="requiredRules"
-                    required
                   ></v-text-field>
                   <v-col cols="12">
                     <v-text-field
                       v-model="forEditData.adult"
                       label="Adult"
-                      :rules="requiredRules"
-                      required
                     ></v-text-field>
                     <v-col cols="12">
                       <v-text-field
@@ -143,11 +139,7 @@
               color="success"
               :loading="loading"
               :disabled="loading"
-              @click="
-                saveData();
-                validate;
-                loader = 'loading';
-              "
+              @click="saveData()"
               >Save
             </v-btn>
           </v-card-actions>
@@ -167,10 +159,7 @@
               :loading="loading2"
               :disabled="loading2"
               color="error"
-              @click="
-                confirmDelete();
-                loader = 'loading2';
-              "
+              @click="confirmDelete()"
               >Yes
             </v-btn>
           </v-card-actions>
@@ -257,25 +246,16 @@ export default {
       ],
     };
   },
-  watch: {
-    loader() {
-      const l = this.loader;
-      this[l] = !this[l];
-      setTimeout(() => (this[l] = false), 1000);
-      this.loader = null;
-    },
-  },
   methods: {
-    validate() {
-      this.$refs.form.validate();
-    },
     async saveData() {
-        const booking = db
-          .collection("booking")
-          .doc(this.dataId);
+      if (this.$refs.form.validate()) {
+        this.loading = true;
+        const booking = db.collection("booking").doc(this.dataId);
         await booking.update(this.forEditData);
+
         this.snackbarEdit = true;
-      this.saveDialogClose();
+        this.saveDialogClose();
+      }
     },
 
     saveDialogClose() {
@@ -297,19 +277,18 @@ export default {
       this.editIndex = this.data.indexOf(item);
       this.dataId = item.id;
       this.forEditData = { ...item };
-      console.log(this.editIndex)
       this.deleteDialog = true;
     },
     async confirmDelete() {
+      this.loading2 = true;
       await db.collection("booking").doc(this.dataId).delete();
       this.snackbarDel = true;
       this.name = this.forEditData.lastname;
-      this.data.splice(this.editIndex, 1)
+      this.data.splice(this.editIndex, 1);
       this.closeDeleteDialog();
     },
 
     closeDeleteDialog() {
-      
       this.$nextTick(() => {
         this.forEditData = { ...this.defaultData };
         this.editIndex = -1;
@@ -322,18 +301,23 @@ export default {
     });
 
     const bookingDb = db.collection("booking");
-    bookingDb.onSnapshot(bookingSnapshot =>{
-      bookingSnapshot.docChanges().forEach(change => {
-        if(change.type === 'added'){
+    bookingDb.onSnapshot((bookingSnapshot) => {
+      bookingSnapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
           this.data.push({
             ...change.doc.data(),
-            id: change.doc.id
-          })
-        } if(change.type === 'removed') {
-          this.deleteDialog = false;
-          this.dataId = null
+            id: change.doc.id,
+          });
         }
-      })
+        if (change.type === 'modified') {
+          this.loading = false
+        }
+        if (change.type === "removed") {
+          this.deleteDialog = false;
+          this.loading2 = false;
+          this.dataId = null;
+        }
+      });
     });
   },
 };

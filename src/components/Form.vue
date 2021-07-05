@@ -158,7 +158,7 @@
               </v-col>
             </v-row>
             <v-col class="text-center" cols="12">
-              <v-btn :disabled="!valid" @click="validate()">Submit</v-btn>
+              <v-btn :lodaing="loading" :disabled="!valid" @click="validate()">Submit</v-btn>
             </v-col>
           </v-form>
         </v-card>
@@ -177,6 +177,7 @@ export default {
       modal1: false,
       modal2: false,
       disable: true,
+      loading: false,
       fname: "",
       fnameRules: [
         (v) => !!v || "First name is Required",
@@ -206,6 +207,7 @@ export default {
   methods: {
     async validate() {
       if (this.$refs.form.validate() == true) {
+        this.loading = true
         const data = {
           firstname: this.fname,
           lastname: this.lname,
@@ -217,6 +219,7 @@ export default {
         };
         console.log(data);
         await db.collection('booking').add(data);
+        
         this.dialog = false;
       }
     },
